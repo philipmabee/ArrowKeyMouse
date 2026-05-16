@@ -1,12 +1,22 @@
-
-import time
-
 from pynput.mouse import Button, Controller
 from pynput import keyboard
+import asyncio
 
 mouse = Controller()
 pressed_keys = set()
 # keys = set()
+async def waitToRemoveKeys():
+		await asyncio.sleep(0.1)
+		pressed_keys.clear()
+
+async def main():
+    # Schedule the job to run concurrently
+    task = asyncio.create_task(waitToRemoveKeys())
+    
+    # Keep doing other things while the job runs
+    while not task.done():
+        print("Main loop is fully responsive...")
+        await asyncio.sleep(0.1)  # Yields control back to the event loop
 def on_release(key):
     try:
         pressed_keys.remove(key)
@@ -15,24 +25,36 @@ def on_release(key):
 def print_keys_pressed():
 	if doublepressed():
 		if keyboard.Key.up in pressed_keys and keyboard.Key.right in pressed_keys:
-			pressed_keys.add(keyboard.Key.up)
-			pressed_keys.add(keyboard.Key.right)
+			# pressed_keys.add(keyboard.Key.up)
+			# pressed_keys.add(keyboard.Key.right)
 			print("up and right pressed")
+			mouse.move(20, -20)
+			# pressed_keys.remove(keyboard.Key.up)
+			# pressed_keys.remove(keyboard.Key.right)
 
 		elif keyboard.Key.up in pressed_keys and keyboard.Key.left in pressed_keys:
-			pressed_keys.add(keyboard.Key.up)
-			pressed_keys.add(keyboard.Key.left)
+			# pressed_keys.add(keyboard.Key.up)
+			# pressed_keys.add(keyboard.Key.left)
 			print("up and left pressed")
+			mouse.move(-20, -20)
+			# pressed_keys.remove(keyboard.Key.up)
+			# pressed_keys.remove(keyboard.Key.left)
 
 		elif keyboard.Key.down in pressed_keys and keyboard.Key.right in pressed_keys:
-			pressed_keys.add(keyboard.Key.down)
-			pressed_keys.add(keyboard.Key.right)
+			# pressed_keys.add(keyboard.Key.down)
+			# pressed_keys.add(keyboard.Key.right)
 			print("down and right pressed")
+			mouse.move(20, 20)
+			# pressed_keys.remove(keyboard.Key.down)
+			# pressed_keys.remove(keyboard.Key.right)
 
 		elif keyboard.Key.down in pressed_keys and keyboard.Key.left in pressed_keys:
-			pressed_keys.add(keyboard.Key.down)
-			pressed_keys.add(keyboard.Key.left)
+			# pressed_keys.add(keyboard.Key.down)
+			# pressed_keys.add(keyboard.Key.left)
 			print("down and left pressed")
+			mouse.move(-20, 20)
+			# pressed_keys.remove(keyboard.Key.down)
+			# pressed_keys.remove(keyboard.Key.left)
 
 def doublepressed():
 	if len(pressed_keys) > 1:
@@ -46,6 +68,8 @@ def doublepressed():
 
 def on_press(key):
 		pressed_keys.add(key)
+		if len(pressed_keys) > 2:
+			asyncio.run(main())
 		if hasattr(key, "left"):
 			print_keys_pressed()
 			# if not doublepressed():
@@ -59,29 +83,29 @@ def on_press(key):
 					mouse.move(0, 20)
 
 			# if doublepressed():
-			if pressed_keys == {keyboard.Key.up, keyboard.Key.right}:
-				mouse.move(20, -20)
-				pressed_keys.remove(keyboard.Key.up)
-				pressed_keys.remove(keyboard.Key.right)
+			# if pressed_keys == {keyboard.Key.up, keyboard.Key.right}:
+			# 	mouse.move(20, -20)
+			# 	pressed_keys.remove(keyboard.Key.up)
+			# 	pressed_keys.remove(keyboard.Key.right)
 
-			elif pressed_keys == {keyboard.Key.up, keyboard.Key.left}:
-				mouse.move(-20, -20)
-				pressed_keys.remove(keyboard.Key.up)
-				pressed_keys.remove(keyboard.Key.left)
+			# elif pressed_keys == {keyboard.Key.up, keyboard.Key.left}:
+			# 	mouse.move(-20, -20)
+			# 	pressed_keys.remove(keyboard.Key.up)
+			# 	pressed_keys.remove(keyboard.Key.left)
 
-			elif pressed_keys == {keyboard.Key.down, keyboard.Key.right}:
-				mouse.move(20, 20)
-				pressed_keys.remove(keyboard.Key.down)
-				pressed_keys.remove(keyboard.Key.right)
+			# elif pressed_keys == {keyboard.Key.down, keyboard.Key.right}:
+			# 	mouse.move(20, 20)
+			# 	pressed_keys.remove(keyboard.Key.down)
+			# 	pressed_keys.remove(keyboard.Key.right)
 
-			elif pressed_keys == {keyboard.Key.down, keyboard.Key.left}:
-				mouse.move(-20, 20)
-				pressed_keys.remove(keyboard.Key.down)
-				pressed_keys.remove(keyboard.Key.left)
+			# elif pressed_keys == {keyboard.Key.down, keyboard.Key.left}:
+			# 	mouse.move(-20, 20)
+			# 	pressed_keys.remove(keyboard.Key.down)
+			# 	pressed_keys.remove(keyboard.Key.left)
 
-			if key == key.page_up:
+			if key == key.enter:
 					mouse.click(Button.left, 1)
-			if key == key.page_down:
+			if key == key.space:
 					mouse.click(Button.right, 1)
 		print(f"{key} pressed")
 
@@ -89,4 +113,4 @@ with keyboard.Listener(on_press=on_press) as listener:
     listener.join()
 
 
-# yooooooooo
+# asyncio.run(main())
