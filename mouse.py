@@ -1,10 +1,10 @@
 from pynput.mouse import Button, Controller
 from pynput import keyboard
 import asyncio
+from Constants import UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, LEFT_CLICK, RIGHT_CLICK
 
 mouse = Controller()
 pressed_keys = set()
-# keys = set()
 async def waitToRemoveKeys():
 		await asyncio.sleep(0.1)
 		pressed_keys.clear()
@@ -24,47 +24,28 @@ def on_release(key):
         pass
 def print_keys_pressed():
 	if doublepressed():
-		if keyboard.Key.up in pressed_keys and keyboard.Key.right in pressed_keys:
-			# pressed_keys.add(keyboard.Key.up)
-			# pressed_keys.add(keyboard.Key.right)
+		if keyboard.Key.up in pressed_keys and RIGHT_KEY in pressed_keys:
 			print("up and right pressed")
 			mouse.move(20, -20)
-			# pressed_keys.remove(keyboard.Key.up)
-			# pressed_keys.remove(keyboard.Key.right)
 
-		elif keyboard.Key.up in pressed_keys and keyboard.Key.left in pressed_keys:
-			# pressed_keys.add(keyboard.Key.up)
-			# pressed_keys.add(keyboard.Key.left)
+		elif keyboard.Key.up in pressed_keys and LEFT_KEY in pressed_keys:
 			print("up and left pressed")
 			mouse.move(-20, -20)
-			# pressed_keys.remove(keyboard.Key.up)
-			# pressed_keys.remove(keyboard.Key.left)
 
-		elif keyboard.Key.down in pressed_keys and keyboard.Key.right in pressed_keys:
-			# pressed_keys.add(keyboard.Key.down)
-			# pressed_keys.add(keyboard.Key.right)
+		elif keyboard.Key.down in pressed_keys and RIGHT_KEY in pressed_keys:
 			print("down and right pressed")
 			mouse.move(20, 20)
-			# pressed_keys.remove(keyboard.Key.down)
-			# pressed_keys.remove(keyboard.Key.right)
 
-		elif keyboard.Key.down in pressed_keys and keyboard.Key.left in pressed_keys:
-			# pressed_keys.add(keyboard.Key.down)
-			# pressed_keys.add(keyboard.Key.left)
+
+		elif keyboard.Key.down in pressed_keys and LEFT_KEY in pressed_keys:
 			print("down and left pressed")
 			mouse.move(-20, 20)
-			# pressed_keys.remove(keyboard.Key.down)
-			# pressed_keys.remove(keyboard.Key.left)
 
 def doublepressed():
 	if len(pressed_keys) > 1:
 		return True
 	else:
 		return False
-
-# 		return True
-# 	else:
-# 		return False
 
 def on_press(key):
 		pressed_keys.add(key)
@@ -73,39 +54,18 @@ def on_press(key):
 		if hasattr(key, "left"):
 			print_keys_pressed()
 			# if not doublepressed():
-			if key == key.left:
+			if key == LEFT_KEY:
 					mouse.move(-20, 0) 
-			if key == key.right:
+			if key == RIGHT_KEY:
 					mouse.move(20, 0)
-			if key == key.up:
+			if key == UP_KEY:
 					mouse.move(0, -20)
-			if key == key.down:
+			if key == DOWN_KEY:
 					mouse.move(0, 20)
 
-			# if doublepressed():
-			# if pressed_keys == {keyboard.Key.up, keyboard.Key.right}:
-			# 	mouse.move(20, -20)
-			# 	pressed_keys.remove(keyboard.Key.up)
-			# 	pressed_keys.remove(keyboard.Key.right)
-
-			# elif pressed_keys == {keyboard.Key.up, keyboard.Key.left}:
-			# 	mouse.move(-20, -20)
-			# 	pressed_keys.remove(keyboard.Key.up)
-			# 	pressed_keys.remove(keyboard.Key.left)
-
-			# elif pressed_keys == {keyboard.Key.down, keyboard.Key.right}:
-			# 	mouse.move(20, 20)
-			# 	pressed_keys.remove(keyboard.Key.down)
-			# 	pressed_keys.remove(keyboard.Key.right)
-
-			# elif pressed_keys == {keyboard.Key.down, keyboard.Key.left}:
-			# 	mouse.move(-20, 20)
-			# 	pressed_keys.remove(keyboard.Key.down)
-			# 	pressed_keys.remove(keyboard.Key.left)
-
-			if key == key.enter:
+			if key == LEFT_CLICK:
 					mouse.click(Button.left, 1)
-			if key == key.space:
+			if key == RIGHT_CLICK:
 					mouse.click(Button.right, 1)
 		print(f"{key} pressed")
 
