@@ -1,8 +1,4 @@
-from pynput.mouse import Button, Controller
 from pynput import keyboard
-
-mouse = Controller()
-pressed_keys = set()
 
 UP_KEY = keyboard.Key.up
 DOWN_KEY = keyboard.Key.down
