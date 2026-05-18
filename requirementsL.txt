@@ -1,2 +1,2 @@
-python3
-sudo pip install keyboard --break-system-packages
+apt install python3 -y
+apt install python3-pynput

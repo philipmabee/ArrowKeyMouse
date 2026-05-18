@@ -1,4 +1,4 @@
 # Install Dependencies on Windows 
 ## pip install -r requirements.txt
 # Install Dependencies on Linux 
-## sudo xargs -a requirementsL.txt apt install -y
+## while IFS= read -r line; do sudo $line; done < requirementsL.txt
