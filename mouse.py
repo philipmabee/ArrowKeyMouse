@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+
 from pynput.mouse import Button, Controller
 from pynput import keyboard
 from Xlib import X
 from Xlib.display import Display
 from time import sleep
-from Constants import UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, LEFT_CLICK, RIGHT_CLICK, TOGGLE_KEY, SUPPRESSED_KEYSYMS
+from Constants import UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, LEFT_CLICK, RIGHT_CLICK, TOGGLE_KEY, SUPPRESSED_KEYSYMS, MOUSE_SPEED, SPEED_UP_KEY, SPEED_DOWN_KEY
  
 mouse = Controller()
 mouse_dir = [0, 0]  # x, y
@@ -13,57 +15,67 @@ display = Display()
 root = display.screen().root
  
 def grab_keys():
-    for keysym in SUPPRESSED_KEYSYMS:
-        keycode = display.keysym_to_keycode(keysym)
-        if keycode:
-            root.grab_key(keycode, X.AnyModifier, True,
-                          X.GrabModeAsync, X.GrabModeAsync)
-    display.flush()
+		for keysym in SUPPRESSED_KEYSYMS:
+				keycode = display.keysym_to_keycode(keysym)
+				if keycode:
+						root.grab_key(keycode, X.AnyModifier, True,
+													X.GrabModeAsync, X.GrabModeAsync)
+		display.flush()
  
 def ungrab_keys():
-    for keysym in SUPPRESSED_KEYSYMS:
-        keycode = display.keysym_to_keycode(keysym)
-        if keycode:
-            root.ungrab_key(keycode, X.AnyModifier)
-    display.flush()
+		for keysym in SUPPRESSED_KEYSYMS:
+				keycode = display.keysym_to_keycode(keysym)
+				if keycode:
+						root.ungrab_key(keycode, X.AnyModifier)
+		display.flush()
  
 def set_suppression(state):
-    global suppressing
-    suppressing = state
-    if suppressing:
-        grab_keys()
-        print("Suppression ON")
-    else:
-        ungrab_keys()
-        print("Suppression OFF")
+		global suppressing
+		suppressing = state
+		if suppressing:
+				grab_keys()
+				print("Suppression ON")
+		else:
+				ungrab_keys()
+				print("Suppression OFF")
  
 def on_press(key):
-    if key == TOGGLE_KEY:
-        set_suppression(not suppressing)
-        return
+		if key == SPEED_UP_KEY:
+				global MOUSE_SPEED
+				MOUSE_SPEED += 2
+				print(f"Mouse speed increased to {MOUSE_SPEED}")
+				return
+		if key == SPEED_DOWN_KEY:
+				global MOUSE_SPEED
+				MOUSE_SPEED -= 2
+				print(f"Mouse speed decreased to {MOUSE_SPEED}")
+				return
+		if key == TOGGLE_KEY:
+				set_suppression(not suppressing)
+				return
  
-    if key == LEFT_KEY:
-        mouse_dir[0] = -18
-    elif key == RIGHT_KEY:
-        mouse_dir[0] = 18
-    elif key == UP_KEY:
-        mouse_dir[1] = -18
-    elif key == DOWN_KEY:
-        mouse_dir[1] = 18
-    elif key == LEFT_CLICK:
-        mouse.click(Button.left)
-    elif key == RIGHT_CLICK:
-        mouse.click(Button.right)
+		if key == LEFT_KEY:
+				mouse_dir[0] = -MOUSE_SPEED
+		elif key == RIGHT_KEY:
+				mouse_dir[0] = MOUSE_SPEED
+		elif key == UP_KEY:
+				mouse_dir[1] = -MOUSE_SPEED
+		elif key == DOWN_KEY:
+				mouse_dir[1] = MOUSE_SPEED
+		elif key == LEFT_CLICK:
+				mouse.click(Button.left)
+		elif key == RIGHT_CLICK:
+				mouse.click(Button.right)
  
 def on_release(key):
-    if key == LEFT_KEY:
-        mouse_dir[0] = 0
-    elif key == RIGHT_KEY:
-        mouse_dir[0] = 0
-    elif key == UP_KEY:
-        mouse_dir[1] = 0
-    elif key == DOWN_KEY:
-        mouse_dir[1] = 0
+		if key == LEFT_KEY:
+				mouse_dir[0] = 0
+		elif key == RIGHT_KEY:
+				mouse_dir[0] = 0
+		elif key == UP_KEY:
+				mouse_dir[1] = 0
+		elif key == DOWN_KEY:
+				mouse_dir[1] = 0
  
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
@@ -71,5 +83,5 @@ listener.start()
 print(f"Running. Press {TOGGLE_KEY} to toggle suppression.")
  
 while True:
-    mouse.move(mouse_dir[0], mouse_dir[1])
-    sleep(0.02)
+		mouse.move(mouse_dir[0], mouse_dir[1])
+		sleep(0.02)
