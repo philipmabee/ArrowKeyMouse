@@ -4,7 +4,6 @@ from Xlib.display import Display
 from Xlib.ext import record
 import asyncio
 import threading
-import struct
 from Constants import UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, LEFT_CLICK, RIGHT_CLICK, TOGGLE_KEY
  
 mouse = Controller()
