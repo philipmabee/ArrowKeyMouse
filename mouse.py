@@ -10,7 +10,6 @@ from Constants import UP_KEY, DOWN_KEY, LEFT_KEY, RIGHT_KEY, LEFT_CLICK, RIGHT_C
 mouse = Controller()
 mouse_dir = [0, 0]  # x, y
 suppressing = False
- 
 display = Display()
 root = display.screen().root
  
@@ -40,13 +39,12 @@ def set_suppression(state):
 				print("Suppression OFF")
  
 def on_press(key):
+		global MOUSE_SPEED
 		if key == SPEED_UP_KEY:
-				global MOUSE_SPEED
 				MOUSE_SPEED += 2
 				print(f"Mouse speed increased to {MOUSE_SPEED}")
 				return
 		if key == SPEED_DOWN_KEY:
-				global MOUSE_SPEED
 				MOUSE_SPEED -= 2
 				print(f"Mouse speed decreased to {MOUSE_SPEED}")
 				return
