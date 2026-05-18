@@ -1,0 +1,2 @@
+python3
+sudo pip install keyboard --break-system-packages
