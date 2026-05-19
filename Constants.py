@@ -22,3 +22,9 @@ SUPPRESSED_KEYSYMS = [
     XK.XK_Shift_R, XK.XK_Return,   # shift_r and enter
     XK.XK_Tab, XK.XK_Caps_Lock,    # speed up/down
 ]
+KB_TO_PYNPUT = {
+		"up": UP_KEY, "down": DOWN_KEY,
+		"left": LEFT_KEY, "right": RIGHT_KEY,
+		"shift_r": LEFT_CLICK, "enter": RIGHT_CLICK,
+		"tab": SPEED_UP_KEY, "caps lock": SPEED_DOWN_KEY,
+}
