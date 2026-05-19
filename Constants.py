@@ -1,26 +1,34 @@
+import platform
 from pynput import keyboard
-from Xlib import XK
- 
+
 UP_KEY = keyboard.Key.up
 DOWN_KEY = keyboard.Key.down
 LEFT_KEY = keyboard.Key.left
 RIGHT_KEY = keyboard.Key.right
- 
+
 LEFT_CLICK = keyboard.Key.shift_r
 RIGHT_CLICK = keyboard.Key.enter
- 
+
 TOGGLE_KEY = keyboard.Key.alt_l
- 
+
 SPEED_UP_KEY = keyboard.Key.tab
 SPEED_DOWN_KEY = keyboard.Key.caps_lock
- 
+
 MOUSE_SPEED = 18  # Adjust this for faster/slower movement
- 
-# Xlib keysyms for suppression (must match the keys above)
-SUPPRESSED_KEYSYMS = [
-    XK.XK_Up, XK.XK_Down, XK.XK_Left, XK.XK_Right,
-    XK.XK_Shift_R, XK.XK_Return,   # shift_r and enter
-    XK.XK_Tab, XK.XK_Caps_Lock,    # speed up/down
+
+if platform.system() == "Linux":
+		from Xlib import XK
+		SUPPRESSED_KEYSYMS = [
+				XK.XK_Up, XK.XK_Down, XK.XK_Left, XK.XK_Right,
+				XK.XK_Shift_R, XK.XK_Return,
+				XK.XK_Tab, XK.XK_Caps_Lock,
+		]
+
+# Windows: key name strings for keyboard library
+SUPPRESSED_KEY_NAMES = [
+		"up", "down", "left", "right",
+		"shift_r", "enter",
+		"tab", "caps lock",
 ]
 KB_TO_PYNPUT = {
 		"up": UP_KEY, "down": DOWN_KEY,
