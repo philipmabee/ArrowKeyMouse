@@ -7,30 +7,38 @@ mouse_dir = [0, 0] # x, y
 
 def on_press(key):
     if hasattr(key, "left"):
-        if key == key.left:
-            mouse_dir[0] = -10
-        if key == key.right:
-            mouse_dir[0] = 10
-        if key == key.up:
-            mouse_dir[1] = -10
-        if key == key.down:
-            mouse_dir[1] = 10
+        match key:
+            case key.left:
+                mouse_dir[0] = -10
+            case key.right:
+                mouse_dir[0] = 10
+            case key.up:
+                mouse_dir[1] = -10
+            case key.down:
+                mouse_dir[1] = 10
 
-        if key == key.page_up:
-            mouse.click(Button.left)
-        if key == key.page_down:
-            mouse.click(Button.right)
+            case key.page_up:
+                mouse.press(Button.left)
+            case key.page_down:
+                mouse.press(Button.right)
 
 def on_release(key):
     if hasattr(key, "left"):
-        if key == key.left:
-            mouse_dir[0] = 0
-        if key == key.right:
-            mouse_dir[0] = 0
-        if key == key.up:
-            mouse_dir[1] = 0
-        if key == key.down:
-            mouse_dir[1] = 0
+
+        match key:
+            case key.left:
+                mouse_dir[0] = 0
+            case key.right:
+                mouse_dir[0] = 0
+            case key.up:
+                mouse_dir[1] = 0
+            case key.down:
+                mouse_dir[1] = 0
+
+            case key.page_up:
+                mouse.release(Button.left)
+            case key.page_down:
+                mouse.release(Button.right)
 
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
